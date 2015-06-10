@@ -6,6 +6,7 @@ from datetime import datetime
 from functools import partial
 import cgi
 import cgitb
+import json
 cgitb.enable()
 
 binPath = "/dataq/bin/"
@@ -140,6 +141,8 @@ def printMetrics(records, fmt):
         print "\r\n".join(map("".join,records))
     elif(fmt == "CSV"):
         print ",".join(map("".join,records)) + "\r\n",
+    elif(fmt == "JSON"):
+        print json.dumps(records)
 
 def printData(records, fmt):
     if(fmt == "Human"):
@@ -147,6 +150,8 @@ def printData(records, fmt):
             print "%10s %3s %6s %3s %4s %20s %lf" % row
     elif(fmt == "CSV"):
         print "\r\n".join(map(", ".join, map( partial(map, str),records))) +"\r\n",
+    elif(fmt == "JSON"):
+        print json.dumps(records)
 
 def printHash(records, fmt):
     if(fmt == "Human"):
@@ -154,6 +159,8 @@ def printHash(records, fmt):
             print "%10s %3s %6s %3s %4s %20s %15lf %32s" % row
     elif(fmt == "CSV"):
         print "\r\n".join(map(", ".join, map( partial(map, str),records))) +"\r\n",
+    elif(fmt == "JSON"):
+        print json.dumps(records)
 
 def printMd5(records, fmt):
     if(fmt == "Human"):
@@ -161,6 +168,8 @@ def printMd5(records, fmt):
             print "%10s %32s" % row
     elif(fmt == "CSV"):
         print "\r\n".join(map(", ".join, map( partial(map, str),records))) +"\r\n",
+    elif(fmt == "JSON"):
+        print json.dumps(records)
 
 form = cgi.FieldStorage()
 if "cmd" not in form:
@@ -204,11 +213,13 @@ else:
 #Set HTTP header based on response type
 if(fmt == "CSV"):
     print "Content-Type: text/csv"
+elif(fmt == "JSON")
+    print "Content-Type: application/json"
 else:
     print "Content-Type: text/plain"
 print ""
 
-db_args = (network, station, metric, location, channel, sdate, edate) 
+db_args = (network, station, metric, location, channel, sdate, edate)
 if cmd_str == "metrics":
     printMetrics(database.select(queries["metrics"]), fmt)
 elif cmd_str == "data":
