@@ -13,7 +13,7 @@ binPath = "/dataq/bin/"
 sys.path.insert(0, binPath)
 import Database
 
-formats = ["Human", "CSV"]
+formats = ["Human", "CSV", "JSON"]
 #CSV format should follow RFC 4180 unless another standard is agreed on.
 #http://tools.ietf.org/html/rfc4180
 
